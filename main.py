@@ -159,7 +159,7 @@ async def on_message(message):
                     content = format_message(result)
                     if should_delete:
                         await message.delete()
-                        await message.channel.send(content)
+                        await message.channel.send(f"**{message.author.display_name}**\n{content}")
                     else:
                         # Try to suppress embeds on the original message
                         try:
