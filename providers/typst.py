@@ -28,21 +28,21 @@ class TypstProvider(MathProvider):
         try:
             logger.debug(f"Received expression: {expression!r}")
             # Remove $$ delimiters if present
-            typst = expression.strip()
-            if typst.startswith("$$") and typst.endswith("$$"):
-                typst = typst[1:-1].strip()
+            typst_str = expression.strip()
+            if typst_str.startswith("$$") and typst_str.endswith("$$"):
+                typst_str = typst_str[1:-1].strip()
             # Remove \n
-            typst = typst.replace("\n", " ").strip()
-            logger.debug(f"Sanitized typst: {typst!r}")
+            typst_str = typst_str.replace("\n", " ").strip()
+            logger.debug(f"Sanitized typst: {typst_str!r}")
 
             # Prepend Typst header
-            typst_with_header = TYPST_HEADER + typst
+            typst_with_header = TYPST_HEADER + typst_str
             # Convert typst to bytes
             typst_bytes = typst_with_header.encode()
             logger.debug(f"typst with header as bytes: {typst_bytes}")
 
             # Generate hash for filename
-            formula_hash = hashlib.md5(typst.encode()).hexdigest()[:8]
+            formula_hash = hashlib.md5(typst_str.encode()).hexdigest()[:8]
             filename = f"typst-{formula_hash}.png"
             logger.debug(f"Generated filename: {filename}")
 
@@ -53,7 +53,7 @@ class TypstProvider(MathProvider):
                     f"PNG bytes generated for {filename}, size: {len(png_bytes)} bytes"
                 )
                 return (png_bytes, filename)
-            logger.warning(f"No PNG bytes returned for expression: {typst!r}")
+            logger.warning(f"No PNG bytes returned for expression: {typst_str!r}")
             return None
         except Exception as e:
             logger.error(f"Error rendering expression: {expression!r}", exc_info=e)
