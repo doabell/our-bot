@@ -8,15 +8,36 @@ from engine import process_message, format_message
 import logging
 from dotenv import load_dotenv
 import os
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
 
 # Set up Discord intents
 intents = discord.Intents.default()
 intents.message_content = True
 
 
+class RickRollRedirectHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(302)
+        self.send_header("Location", RICK_ROLL_URL)
+        self.end_headers()
+
+
+def run_redirect_server():
+    server_address = ("", 8080)
+    httpd = HTTPServer(server_address, RickRollRedirectHandler)
+    logging.info(
+        f"Redirect server running on port 8080, redirecting to {RICK_ROLL_URL}"
+    )
+    httpd.serve_forever()
+
+
 # Set up logging
 load_dotenv()
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+RICK_ROLL_URL = os.getenv(
+    "RICK_ROLL_URL", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+)
 
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL, logging.INFO),
@@ -154,5 +175,8 @@ if __name__ == "__main__":
     if not DISCORD_TOKEN:
         logging.error("DISCORD_TOKEN environment variable is required")
         exit(1)
+
+    # Start redirect server in a separate thread
+    threading.Thread(target=run_redirect_server, daemon=True).start()
 
     client.run(DISCORD_TOKEN)
