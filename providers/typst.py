@@ -3,7 +3,7 @@ from .provider import MathProvider
 import hashlib
 import typst
 
-PPI = 300.0
+PPI = 900.0
 
 TYPST_HEADER = """
 #set page(
