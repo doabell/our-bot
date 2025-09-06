@@ -1,22 +1,12 @@
-# Our Bot
+# our bot
 
-A Python Discord bot that processes social media links and typst expressions in messages.
+our bot for our server
 
 ## Features
 
-- **Link Processing**: Automatically converts social media links to embed-friendly formats
-  - Instagram → ddinstagram.com
-  - Twitter/X → fxtwitter.com/fixupx.com (with privacy alternatives via nitter.net)
-  - TikTok → tnktok.com
-  - Reddit → rxddit.com (with privacy alternatives via safereddit.com)
-  - YouTube → normalized format
-  - Bilibili → expanded short links
-  - XiaoHongShu (XHS) → expanded and cleaned links
-  - Google Maps → expanded and cleaned links
+- Clean links: remove tracking and preserve privacy
 
-- **typst Detection**: Detects and renders Typst expressions in `$$` blocks
-
-- **Privacy Links**: Some providers offer privacy-preserving alternatives
+- Typst: detects and renders Typst expressions in `$$` blocks
 
 ## Setup
 
