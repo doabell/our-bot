@@ -2,23 +2,6 @@ import requests
 from urllib.parse import urlparse, parse_qs
 from .provider import LinkProvider
 
-GOOGLE_MAPS_HEADERS = {
-    "Host": "www.google.com",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
-    "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Referer": "https://www.google.com/",
-    "DNT": "1",
-    "Sec-GPC": "1",
-    "Connection": "keep-alive",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-origin",
-    "TE": "trailers",
-}
-
-
 class GoogleMapsProvider(LinkProvider):
     """Handles Google Maps links by expanding and cleaning them"""
 
@@ -35,8 +18,8 @@ class GoogleMapsProvider(LinkProvider):
             or "maps.google.com/maps" in link
         ):
             try:
-                response = requests.get(
-                    link, headers=GOOGLE_MAPS_HEADERS, allow_redirects=True, timeout=5
+                response = requests.head(
+                    link, allow_redirects=True, timeout=5
                 )
                 expanded_link = response.url
                 url = urlparse(expanded_link)
